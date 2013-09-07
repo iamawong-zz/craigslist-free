@@ -4,6 +4,8 @@ var request = require('request'),
     redis   = require('redis'),
     db      = redis.createClient();
 
+var expire_time = process.env.NODE_ENV == 'production' ? 1800 : 0;
+
 var poll_craigslist = function(callback) {
     var body_extractor = function(idx, elem) {
         var $this     = $(this),
@@ -40,7 +42,7 @@ var poll_craigslist = function(callback) {
         $ = cheerio.load(body);
 
         var data = $('p.row').map(body_extractor).filter(not_empty);
-        db.set('recent', data);
+        db.set('recent', data, expire_time);
     });
 };
 
