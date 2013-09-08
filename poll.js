@@ -4,9 +4,15 @@ var request = require('request'),
     redis   = require('redis'),
     db      = redis.createClient();
 
-var expire_time = process.env.NODE_ENV == 'production' ? 1800 : 0;
+db.on("error", function(err) {
+    console.log("REDIS: " + err);
+});
+
+var expire_time = process.env.NODE_ENV == 'production' ? 1800 : 1200;
 
 var poll_craigslist = function(callback) {
+    console.log("polling craigslist");
+
     var body_extractor = function(idx, elem) {
         var $this     = $(this),
             post_id   = $this.attr('data-pid'),
@@ -36,14 +42,17 @@ var poll_craigslist = function(callback) {
 
     request('http://sfbay.craigslist.org/sfc/zip/', function(error, response, body) {
         if (error || response.statusCode != 200) {
-            callback('', '', '');
+            callback({});
         }
 
         $ = cheerio.load(body);
 
-        var data = $('p.row').map(body_extractor).filter(not_empty);
-        db.set('recent', data, expire_time);
+        var data = JSON.stringify($('p.row').map(body_extractor).filter(not_empty));
+        db.set('free', data);
+        db.expire('free', expire_time);
+
+        callback(data);
     });
 };
 
-poll_craigslist();
+exports.craigslist = poll_craigslist;
