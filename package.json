@@ -8,6 +8,7 @@
         "cheerio"   : "0.12.x",
         "request"   : "2.x",
         "underscore": "1.x",
-        "redis"     : "0.x"
+        "redis"     : "0.x",
+        "ejs"       : "0.x"
     }
 }
