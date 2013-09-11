@@ -28,11 +28,11 @@ var poll_craigslist = function(callback) {
         }
 
         return {
-            "post_id": post_id,
-            "longitude": longitude,
-            "latitude": latitude,
-            "anchor": anchor,
-            "title": title
+            'post_id': post_id,
+            'longitude': longitude,
+            'latitude': latitude,
+            'anchor': anchor,
+            'title': title
         };
     };
 
