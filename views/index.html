@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+    <style type="text/css">
+      html { height: 100% }
+      body { height: 100%; margin: 0; padding: 0 }
+      #map-canvas { height: 100% }
+    </style>
+  </head>
+  <body>
+    <div id="map-canvas"></div>
+    <div id="distinct">
+      <% object.forEach(function(elem) { %>
+        <div data-longitude=<%= elem.longitude %> 
+          data-latitutde=<%= elem.latitude %> 
+          data-postid=<%= elem.post_id %> 
+          data-title=<%= elem.title %> 
+          data-anchor=<%= elem.anchor %>></div>
+        <% console.log(elem.title) %>
+      <% }) %>
+    </div>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    <script type="text/javascript"
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD4lRiNMKkkKED4jQefBWTCT4ocGyhJ-L0&sensor=false">
+    </script>
+    <script src="/js/maps.js"></script>
+    <script type="text/javascript">
+    </script>
+  </body>
+</html>
