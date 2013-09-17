@@ -12,12 +12,11 @@
     <div id="map-canvas"></div>
     <div id="distinct">
       <% object.forEach(function(elem) { %>
-        <div data-longitude=<%= elem.longitude %> 
-          data-latitutde=<%= elem.latitude %> 
+        <div class="posting" data-longitude=<%= elem.longitude %> 
+          data-latitude=<%= elem.latitude %> 
           data-postid=<%= elem.post_id %> 
           data-title=<%= elem.title %> 
-          data-anchor=<%= elem.anchor %>></div>
-        <% console.log(elem.title) %>
+          data-anchor=<%= unescape(elem.anchor) %>></div>
       <% }) %>
     </div>
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>

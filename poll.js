@@ -19,7 +19,7 @@ var poll_craigslist = function(callback) {
             latitude  = $this.attr('data-latitude'),
             longitude = $this.attr('data-longitude'),
             anchor    = $this.children('a').attr('href'),
-            title     = $this.children('.pl').children('a').text();
+            title     = escape($this.children('.pl').children('a').text());
 
         if (latitude === undefined && longitude === undefined) {
             // Need to figure out what to do later if we dont have the longitude and latitude
