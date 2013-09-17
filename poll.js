@@ -55,4 +55,16 @@ var poll_craigslist = function(callback) {
     });
 };
 
+var poll_item = function(craigslist_endpoint, callback) {
+    console.log("looking at " + craigslist_endpoint);
+
+    request('http://sfbay.craigslist.org' + craigslist_endpoint, function(err, response, body) {
+        if (error || response.statusCode != 200) {
+            callback({});
+        }
+
+        
+    });
+};
+
 exports.craigslist = poll_craigslist;

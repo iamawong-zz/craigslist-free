@@ -7,7 +7,7 @@
         };
 
         var map = new google.maps.Map(document.getElementById("map-canvas"), mapOptions);
-    	
+
     	var getPostings = function(callback) {
     		var postingsArray = $('#distinct .posting').map(function(idx, elem) {
     			var $this = $(this);
@@ -37,6 +37,13 @@
 		    	position: latLng,
 		    	map: map,
 		    	title: elem.title
+			});
+
+			google.maps.event.addListener(marker, 'click', function() {
+				$.get("/item", { anchor: elem.anchor }, function(data, status) {
+
+				});
+				// infowindow.open(map, marker);
 			});
         };
 
