@@ -34,19 +34,44 @@ app.get('/', function(req, res) {
 				return;
 			}
 
-			poll.craigslist(callback);
+			poll.listings(callback);
 		});
 	};
 
 	get_craigslist(function(data) {
 		var object = JSON.parse(data);
 		console.log(object);
-		res.render('index.html', {json: data, object: object});
+		res.render('index.html', {object: object});
 	});
 });
 
 app.get('/item', function(req, res) {
-	console.log(req.query);
+	var request_anchor = req.query.anchor;
+
+	var get_item = function(cb) {
+		db.get(request_anchor, function(err, result) {
+			if (err) {
+				cb({});
+				return;
+			}
+
+			if (result) {
+				console.log('cache hit for item');
+				cb(result);
+				return;
+			}
+
+			poll.item(request_anchor, cb);
+		});
+	}
+
+	get_item(function(data) {
+		data = JSON.parse(data);
+
+		res.writeHead(200, {'Content-Type': 'application/json'});
+		res.write(JSON.stringify({data: data}));
+		res.end();
+	});
 });
 
 app.listen(3000);

@@ -41,9 +41,15 @@
 
 			google.maps.event.addListener(marker, 'click', function() {
 				$.get("/item", { anchor: elem.anchor }, function(data, status) {
+					var title = data.data.title,
+						body = data.data.body;
 
+						var infowindow = new google.maps.InfoWindow({
+						    content: title + body
+						});
+
+						infowindow.open(map, marker);
 				});
-				// infowindow.open(map, marker);
 			});
         };
 

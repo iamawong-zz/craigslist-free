@@ -10,6 +10,11 @@ db.on("error", function(err) {
 
 var expire_time = process.env.NODE_ENV == 'production' ? 1800 : 1200;
 
+var save_to_db = function(key, value) {
+    db.set(key, value);
+    db.expire(key, expire_time);
+}
+
 var poll_craigslist = function(callback) {
     console.log("polling craigslist");
 
@@ -48,8 +53,7 @@ var poll_craigslist = function(callback) {
         $ = cheerio.load(body);
 
         var data = JSON.stringify($('p.row').map(body_extractor).filter(not_empty));
-        db.set('free', data);
-        db.expire('free', expire_time);
+        save_to_db('free', data);
 
         callback(data);
     });
@@ -59,12 +63,24 @@ var poll_item = function(craigslist_endpoint, callback) {
     console.log("looking at " + craigslist_endpoint);
 
     request('http://sfbay.craigslist.org' + craigslist_endpoint, function(err, response, body) {
-        if (error || response.statusCode != 200) {
-            callback({});
+        if (err || response.statusCode != 200) {
+            callback("");
         }
 
-        
+        $ = cheerio.load(body);
+        var body = $('#postingbody').text(),
+            title = $('h2.postingtitle').text();
+
+        var data = JSON.stringify({
+            'body': body,
+            'title': title
+        });
+
+        save_to_db(craigslist_endpoint, data);
+
+        callback(data);
     });
 };
 
-exports.craigslist = poll_craigslist;
+exports.listings = poll_craigslist;
+exports.item = poll_item;
