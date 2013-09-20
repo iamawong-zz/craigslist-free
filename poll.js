@@ -62,7 +62,9 @@ var poll_craigslist = function(callback) {
 var poll_item = function(craigslist_endpoint, callback) {
     console.log("looking at " + craigslist_endpoint);
 
-    request('http://sfbay.craigslist.org' + craigslist_endpoint, function(err, response, body) {
+    var craigslistLink = 'http://sfbay.craigslist.org' + craigslist_endpoint;
+
+    request(craigslistLink, function(err, response, body) {
         if (err || response.statusCode != 200) {
             callback("");
         }
@@ -73,7 +75,8 @@ var poll_item = function(craigslist_endpoint, callback) {
 
         var data = JSON.stringify({
             'body': body,
-            'title': title
+            'title': title,
+            'link': craigslistLink
         });
 
         save_to_db(craigslist_endpoint, data);

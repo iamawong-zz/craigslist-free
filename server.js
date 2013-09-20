@@ -40,7 +40,6 @@ app.get('/', function(req, res) {
 
 	get_craigslist(function(data) {
 		var object = JSON.parse(data);
-		console.log(object);
 		res.render('index.html', {object: object});
 	});
 });

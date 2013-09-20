@@ -39,16 +39,30 @@
 		    	title: elem.title
 			});
 
+            var self = this,
+                lastOpenedInfoWindow = null;
+
 			google.maps.event.addListener(marker, 'click', function() {
 				$.get("/item", { anchor: elem.anchor }, function(data, status) {
 					var title = data.data.title,
-						body = data.data.body;
+						body = data.data.body,
+                        link = data.data.link;
 
-						var infowindow = new google.maps.InfoWindow({
-						    content: title + body
-						});
+                        var infoWindowOptions = {
+                            content: '<h4><a href="' + link + '">' + title + '</a></h4>' + body,
+                            disableAutoPan: true,
+                            maxWidth: 300
+                        };
 
-						infowindow.open(map, marker);
+						var infoWindow = new google.maps.InfoWindow(infoWindowOptions);
+
+						infoWindow.open(map, marker);
+
+                        if (self.lastOpenedInfoWindow) {
+                            self.lastOpenedInfoWindow.close();
+                        }
+
+                        self.lastOpenedInfoWindow = infoWindow;
 				});
 			});
         };
