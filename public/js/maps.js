@@ -49,7 +49,7 @@
                         link = data.data.link;
 
                         var infoWindowOptions = {
-                            content: '<h4><a href="' + link + '">' + title + '</a></h4>' + body,
+                            content: '<a href="' + link + '"><h4>' + title + '</h4></a>' + body,
                             disableAutoPan: true,
                             maxWidth: 300
                         };
